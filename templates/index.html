@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .img{
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow:hidden;
+            -webkit-border-radius:50px;
+            -moz-border-radius:50px;
+            border-radius:50px;
+            width:90px;
+            height:90px;
+            display:inline-block;
+            border: 1px solid #008080;
+        }
+        .td{
+            font-size:15px;
+            padding: 1500px 0;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .ship {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            position: center;
+        }
+        .ship:last-child {
+            border-bottom: none;
+        }
+        .ship img {
+            max-width: 200px;
+            height: auto;
+        }
+        footer {
+            text-align: center;
+            padding: 0px 0;
+            background-color: #007BFF;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Информация о кораблях</h1>
+        <nav>
+            <a href="{{ url_for('upload') }}">Добавить</a>
+        </nav>
+    </header>
+    <main>
+        <form method="POST" action="{{ url_for('index') }}">
+            <input type="text" name="query" placeholder="Искать по имени">
+            <input type="text" name="category" placeholder="Искать по категории">
+            <button type="submit">Поиск</button>
+        </form>
+        {% for ship in ships.items %}
+            <div class="ship">
+                <table>
+                    <tr>
+                        <td><h2>{{ ship.name }}</h2>
+                        <p>{{ ship.short_description }}</p>
+                        <p><strong>Категория:</strong> {{ ship.type }}</p>
+                        <p><strong>Год спуска:</strong> {{ ship.year_built }}</p>
+                        <p><strong>Страна происхождения:</strong> {{ ship.country_of_origin }}</p>
+                        <p><strong>Активность:</strong> {{ 'Yes' if ship.is_active else 'No' }}</p>
+
+                        <td><img src="{{ ship.image_url }}" alt="{{ ship.name }}">
+                    </tr>
+                    <tr>
+                        <td><p><a href="{{ ship.wikipedia_link }}" target="_blank">Wiki</a></p>
+                        <td><a href="{{ url_for('edit_ship', ship_id=ship.id) }}" class="btn btn-warning">Редактировать</a>
+                    </tr>>
+                </table>>
+            </div>
+        {% endfor %}
+        <div class="pagination">
+            {% if ships.has_prev %}
+                <a href="{{ url_for('index', page=ships.prev_num) }}">Пред.</a>
+            {% endif %}
+            <span>Страница {{ ships.page }} из {{ ships.pages }}</span>
+            {% if ships.has_next %}
+                <a href="{{ url_for('index', page=ships.next_num) }}">След.</a>
+            {% endif %}
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Ship Information. All rights reserved.</p>
+    </footer>
+</body>
+</html>

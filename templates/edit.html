@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Ship</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            margin: 0 15px;
+        }
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Редактирование информации</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">На главную</a>
+    </nav>
+</header>
+<main>
+<div class="container">
+    <h1 style="text-align: center;"  class="mt-5">Редактирование</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Имя</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ ship.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="type">Категория</label>
+            <input type="text" class="form-control" id="type" name="type" value="{{ ship.type }}" required>
+        </div>
+        <div class="form-group">
+            <label for="year_built">Год спуска на воду</label>
+            <input type="date" class="form-control" id="year_built" name="year_built" value="{{ ship.year_built }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea class="form-control" id="description" name="description" required>{{ ship.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="image_url">Изображение</label>
+            <input type="url" class="form-control" id="image_url" name="image_url" value="{{ ship.image_url }}" required>
+        </div>
+        <div class="form-group">
+            <label for="short_description">Краткое описание</label>
+            <input type="text" class="form-control" id="short_description" name="short_description" value="{{ ship.short_description }}" required>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {% if ship.is_active %}checked{% endif %}>
+            <label class="form-check-label" for="is_active">Активен?</label>
+        </div>
+        <div class="form-group">
+            <label for="wikipedia_link">Ссылка на Вики</label>
+            <input type="url" class="form-control" id="wikipedia_link" name="wikipedia_link" value="{{ ship.wikipedia_link }}" required>
+        </div>
+        <div class="form-group">
+            <label for="country_of_origin">Страна происхождения</label>
+            <input type="text" class="form-control" id="country_of_origin" name="country_of_origin" value="{{ ship.country_of_origin }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Подтвердить</button>
+    </form>
+    <form method="GET" action="{{ url_for('delete_ship', ship_id=ship.id) }}">
+        <button type="submit" class="delete-button">Удалить корабль</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Вернуться на Главную</a>
+</div>
+</main>>
